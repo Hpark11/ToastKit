@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'ToastKit_Example' do
+  pod 'ToastKit', :path => '../'
+
+  target 'ToastKit_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
