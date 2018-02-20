@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import ToastKit
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Toast.printSomeThing()
         // Do any additional setup after loading the view, typically from a nib.
     }
 
