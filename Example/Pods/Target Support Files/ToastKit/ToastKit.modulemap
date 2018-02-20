@@ -1,0 +1,6 @@
+framework module ToastKit {
+  umbrella header "ToastKit-umbrella.h"
+
+  export *
+  module * { export * }
+}

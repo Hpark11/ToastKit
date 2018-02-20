@@ -24,7 +24,7 @@ TODO: Add long description of the pod here.
   s.homepage         = 'https://github.com/hpark11/ToastKit'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'hpark11' => 'hspark@zigzag.kr' }
+  s.author           = { 'hpark11' => 'qkrgustnrk@naver.co.kr' }
   s.source           = { :git => 'https://github.com/hpark11/ToastKit.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 

@@ -22,7 +22,7 @@ pod 'ToastKit'
 
 ## Author
 
-hpark11, hspark@zigzag.kr
+hpark11, qkrgustnrk@naver.com
 
 ## License
 
