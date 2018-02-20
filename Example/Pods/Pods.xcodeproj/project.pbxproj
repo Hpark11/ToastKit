@@ -12,6 +12,7 @@
 		5A5EF433203C0693009C1133 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5EF432203C0693009C1133 /* Toast.swift */; };
 		5A5EF435203C2237009C1133 /* ToastEnter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5EF434203C2237009C1133 /* ToastEnter.swift */; };
 		5A5EF437203C2240009C1133 /* ToastExit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5EF436203C2240009C1133 /* ToastExit.swift */; };
+		5A5EF439203C2417009C1133 /* ToastAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5EF438203C2417009C1133 /* ToastAnimation.swift */; };
 		6C6695208A06BE8A664E95AE87250A0E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
 		97626BEAD9BE38E51836E8E7D5445FCB /* Pods-ToastKit_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 264DCFC3F93F9FE519D798D6A6E83C7A /* Pods-ToastKit_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A07F202F2DF23C1E13583342B9E48CEB /* Pods-ToastKit_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E983241E8DBB3EB1614D09222651F1E4 /* Pods-ToastKit_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -48,6 +49,7 @@
 		5A5EF432203C0693009C1133 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		5A5EF434203C2237009C1133 /* ToastEnter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastEnter.swift; sourceTree = "<group>"; };
 		5A5EF436203C2240009C1133 /* ToastExit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastExit.swift; sourceTree = "<group>"; };
+		5A5EF438203C2417009C1133 /* ToastAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastAnimation.swift; sourceTree = "<group>"; };
 		62BA266D6B34AB03E173B2B01F69BABA /* Pods-ToastKit_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ToastKit_Example-frameworks.sh"; sourceTree = "<group>"; };
 		6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		69674AFDC226EC74B4539953829DEBFB /* ToastKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ToastKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -170,6 +172,7 @@
 				5A5EF432203C0693009C1133 /* Toast.swift */,
 				5A5EF434203C2237009C1133 /* ToastEnter.swift */,
 				5A5EF436203C2240009C1133 /* ToastExit.swift */,
+				5A5EF438203C2417009C1133 /* ToastAnimation.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C782138D8B5A337F492013B8FFE4E4A1 /* ToastKit-dummy.m in Sources */,
+				5A5EF439203C2417009C1133 /* ToastAnimation.swift in Sources */,
 				5A5EF435203C2237009C1133 /* ToastEnter.swift in Sources */,
 				5A5EF433203C0693009C1133 /* Toast.swift in Sources */,
 				5A5EF437203C2240009C1133 /* ToastExit.swift in Sources */,

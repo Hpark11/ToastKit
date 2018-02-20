@@ -25,5 +25,10 @@ open class Toast: NSObject {
     static func makeText<T: UIViewController>(_ base: T, text: String, position: Position = .bottom) {
         
     }
+    
+    private static func trigger(after: Double, completion: (() -> Void)?) {
+        guard let execute = completion else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + after, execute: execute)
+    }
 }
 
