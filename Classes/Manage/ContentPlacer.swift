@@ -28,7 +28,7 @@ struct ContentPlacer {
             _ view:         ToastView<T>,
             baseView:       UIView,
             position:       Toast.Position,
-            offset:         CGFloat
+            insets:         UIEdgeInsets
         ) {
         
         var constraints = [
@@ -39,13 +39,13 @@ struct ContentPlacer {
         switch position {
         case .top:
             constraints.append(view.centerXAnchor.constraint(equalTo: baseView.centerXAnchor))
-            constraints.append(view.topAnchor.constraint(equalTo: baseView.topAnchor, constant: offset))
+            constraints.append(view.topAnchor.constraint(equalTo: baseView.topAnchor, constant: insets.top))
         case .center:
             constraints.append(view.centerXAnchor.constraint(equalTo: baseView.centerXAnchor))
             constraints.append(view.centerYAnchor.constraint(equalTo: baseView.centerYAnchor))
         case .bottom:
             constraints.append(view.centerXAnchor.constraint(equalTo: baseView.centerXAnchor))
-            constraints.append(view.bottomAnchor.constraint(equalTo: baseView.bottomAnchor, constant: -offset))
+            constraints.append(view.bottomAnchor.constraint(equalTo: baseView.bottomAnchor, constant: -insets.bottom))
         }
         
         NSLayoutConstraint.activate(constraints)

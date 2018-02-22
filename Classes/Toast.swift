@@ -49,7 +49,7 @@ open class Toast: NSObject {
             _ base:         T,
             text:           String,
             position:       Position = .bottom,
-            offset:         CGFloat = 40,
+            minimumInsets:  UIEdgeInsets = UIEdgeInsets(top: 40, left: 16, bottom: 40, right: 16),
             configuration:  ToastConfiguration = ToastConfiguration()
         ) {
         
@@ -57,7 +57,7 @@ open class Toast: NSObject {
         base.view.addSubview(toastView)
         
         toastView.content.text = text
-        ContentPlacer.placeToastView(toastView, baseView: base.view, position: position, offset: offset)
+        ContentPlacer.placeToastView(toastView, baseView: base.view, position: position, insets: minimumInsets)
         ContentPlacer.placeContent(toastView.content, container: toastView, icon: configuration.icon)
     
         base.view.layoutIfNeeded()
