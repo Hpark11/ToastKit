@@ -24,6 +24,43 @@ import UIKit
 
 class ToastView<T: UIView>: UIView {
     let content = T()
+
+    var configuration: ToastConfiguration = ToastConfiguration() {
+        didSet {
+            layer.backgroundColor = configuration.backgroundColor
+            layer.cornerRadius = 6
+            
+            clipsToBounds = true
+            isHidden = true
+            layer.shadowColor = UIColor.clear.cgColor
+            translatesAutoresizingMaskIntoConstraints = false
+            
+            content.translatesAutoresizingMaskIntoConstraints = false
+            
+            if let label = content as? ToastLabel {
+                label.textColor = .white
+                label.numberOfLines = 0
+                label.font = configuration.font
+            } else if let imageView = content as? UIImageView {
+                
+            }
+            
+            self.addSubview(content)
+        }
+    }
     
-    var configuration: ToastConfiguration = ToastConfiguration()
+    var contentSize: CGSize {
+        guard let baseView = superview else { return CGSize.zero }
+        
+        if let label = content as? ToastLabel {
+            let size = CGSize(width: baseView.bounds.width - 32, height: baseView.bounds.height)
+            let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+            
+            return NSString(string: label.text!).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font: configuration.font], context: nil).size
+        } else if let imageView = content as? UIImageView {
+            return CGSize.zero
+        } else {
+            return CGSize.zero
+        }
+    }
 }

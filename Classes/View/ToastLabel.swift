@@ -22,14 +22,21 @@
 
 import UIKit
 
-class ViewFactory {
-    internal static func createToastView<T: UIView>(
-            _ contentType:  T.Type,
-            configuration:  ToastConfiguration
-        ) -> ToastView<T> {
-        
-        let view = ToastView<T>()
-        view.configuration = configuration
-        return view
+class ToastLabel: UILabel {
+    var insetTop: CGFloat = 4
+    var insetBottom: CGFloat = 4
+    var insetLeft: CGFloat = 4
+    var insetRight: CGFloat = 4
+    
+    override public var intrinsicContentSize: CGSize {
+        var contentSize = super.intrinsicContentSize
+        contentSize.height += (insetTop + insetBottom)
+        contentSize.width += (insetLeft + insetRight)
+        return contentSize
+    }
+    
+    override func drawText(in rect: CGRect) {
+        let insets: UIEdgeInsets = UIEdgeInsets(top: insetTop, left: insetLeft, bottom: insetBottom, right: insetRight)
+        super.drawText(in: UIEdgeInsetsInsetRect(rect, insets))
     }
 }

@@ -44,8 +44,23 @@ open class Toast: NSObject {
         
     }
     
-    static func makeText<T: UIViewController>(_ base: T, text: String, position: Position = .bottom) {
+    @available(iOS 9.0, *)
+    static func makeText<T: UIViewController>(
+            _ base:         T,
+            text:           String,
+            position:       Position = .bottom,
+            offset:         CGFloat = 40,
+            configuration:  ToastConfiguration = ToastConfiguration()
+        ) {
         
+        let toastView = ViewFactory.createToastView(ToastLabel.self, configuration: configuration)
+        base.view.addSubview(toastView)
+        
+        toastView.content.text = text
+        ContentPlacer.placeToastView(toastView, baseView: base.view, position: position, offset: offset)
+        ContentPlacer.placeContent(toastView.content, container: toastView, icon: configuration.icon)
+    
+        base.view.layoutIfNeeded()
     }
 }
 

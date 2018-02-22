@@ -23,6 +23,26 @@
 import Foundation
 
 struct ToastConfiguration {
+    var icon: Icon?
+    
+    var height: CGFloat = 40
+    
+    var backgroundColor: CGColor = UIColor.black.cgColor
+    
+    var textColor: UIColor = .white
+    
+    var cornerRadius: CGFloat = 6
+    
+    var font: UIFont = UIFont.systemFont(ofSize: 12)
+    
+    var enter: ToastEnter = .fadeIn
+    var exit: ToastExit = .fadeOut
+    
+    struct Icon {
+        let image: UIImage
+        let width: CGFloat
+    }
+    
     init() {
         
     }
