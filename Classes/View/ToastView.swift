@@ -65,7 +65,10 @@ class ToastView<T: UIView>: UIView, CAAnimationDelegate {
         }
     }
     
-    internal func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+    internal func animationDidStop(
+            _ anim: CAAnimation,
+            finished flag: Bool
+        ) {
         
         guard let name = anim.value(forKey: "name") as? String,
             let interval = anim.value(forKey: "duration") as? TimeInterval else { return }
@@ -77,35 +80,20 @@ class ToastView<T: UIView>: UIView, CAAnimationDelegate {
         }
     }
     
-    internal func displayAndFinalizeToast(interval: TimeInterval) {
+    internal func displayAndFinalizeToast(
+            interval: TimeInterval
+        ) {
+        
         MotionHandler.trigger(after: interval, completion: { [weak self] in
             guard let strongSelf = self else { return }
             strongSelf.dismiss(exit: strongSelf.configuration.motion.exit)
         })
     }
     
-    private func generateLayerAnimation(keyPath: KeyPath, from: Any?, to: Any?) -> CASpringAnimation {
-        let animation: CASpringAnimation
-        
-        switch keyPath {
-            case .position(let pos): animation = CASpringAnimation(keyPath: pos.raw)
-            case .transform(let tf): animation = CASpringAnimation(keyPath: tf.raw)
-            case .translation(let ts): animation = CASpringAnimation(keyPath: ts.raw)
-            case .color(let clr): animation = CASpringAnimation(keyPath: clr.raw)
-        }
-        
-        animation.delegate = self
-        animation.fromValue = from
-        animation.toValue = to
-        //        slideAnimation.mass = 10.0
-        //        slideAnimation.initialVelocity = 100.0
-        //        slideAnimation.stiffness = 1500.0
-        //        slideAnimation.damping = 50.0
-        animation.duration = animation.settlingDuration
-        return animation
-    }
-    
-    internal func popup(duration: Toast.Duration, enter: ToastEnter) {
+    internal func popup(
+            duration: Toast.Duration,
+            enter: ToastEnter
+        ) {
         
         func animate(with keyPath: KeyPath, from: Any?, to: Any?, duration: Toast.Duration) {
             let animation = generateLayerAnimation(keyPath: keyPath, from: from, to: to)
@@ -143,7 +131,9 @@ class ToastView<T: UIView>: UIView, CAAnimationDelegate {
         }
     }
     
-    internal func dismiss(exit: ToastExit) {
+    internal func dismiss(
+            exit: ToastExit
+        ) {
         
         func animate(with keyPath: KeyPath, from: Any?, to: Any?) {
             let animation = generateLayerAnimation(keyPath: keyPath, from: from, to: to)
@@ -178,5 +168,31 @@ class ToastView<T: UIView>: UIView, CAAnimationDelegate {
             case .slideToTop:       animate(with: .position(.y), from: layer.position.y, to: -(bounds.height + 12))
             case .slideToBottom:    animate(with: .position(.y), from: layer.position.y, to: baseView.bounds.height + 12)
         }
+    }
+    
+    private func generateLayerAnimation(
+            keyPath:    KeyPath,
+            from:       Any?,
+            to:         Any?
+        ) -> CASpringAnimation {
+        
+        let animation: CASpringAnimation
+        
+        switch keyPath {
+        case .position(let pos): animation = CASpringAnimation(keyPath: pos.raw)
+        case .transform(let tf): animation = CASpringAnimation(keyPath: tf.raw)
+        case .translation(let ts): animation = CASpringAnimation(keyPath: ts.raw)
+        case .color(let clr): animation = CASpringAnimation(keyPath: clr.raw)
+        }
+        
+        animation.delegate = self
+        animation.fromValue = from
+        animation.toValue = to
+        //        slideAnimation.mass = 10.0
+        //        slideAnimation.initialVelocity = 100.0
+        //        slideAnimation.stiffness = 1500.0
+        //        slideAnimation.damping = 50.0
+        animation.duration = animation.settlingDuration
+        return animation
     }
 }

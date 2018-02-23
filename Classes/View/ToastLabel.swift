@@ -35,7 +35,10 @@ class ToastLabel: UILabel {
         return contentSize
     }
     
-    override func drawText(in rect: CGRect) {
+    override func drawText(
+            in rect: CGRect
+        ) {
+        
         let insets: UIEdgeInsets = UIEdgeInsets(top: insetTop, left: insetLeft, bottom: insetBottom, right: insetRight)
         super.drawText(in: UIEdgeInsetsInsetRect(rect, insets))
     }

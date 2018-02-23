@@ -56,7 +56,11 @@ public struct ToastConfiguration {
         
     }
     
-    public init(enter: ToastEnter, exit: ToastExit) {
+    public init(
+            enter: ToastEnter,
+            exit: ToastExit
+        ) {
+        
         motion = Motion(enter: enter, exit: exit)
     }
 }

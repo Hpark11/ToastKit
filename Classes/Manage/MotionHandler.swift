@@ -21,7 +21,11 @@
  */
 
 struct MotionHandler {
-    internal static func trigger(after: Double, completion: (() -> Void)?) {
+    internal static func trigger(
+            after: Double,
+            completion: (() -> Void)?
+        ) {
+        
         guard let execute = completion else { return }
         DispatchQueue.main.asyncAfter(deadline: .now() + after, execute: execute)
     }
