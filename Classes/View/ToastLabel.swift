@@ -23,10 +23,10 @@
 import UIKit
 
 class ToastLabel: UILabel {
-    var insetTop: CGFloat = 4
-    var insetBottom: CGFloat = 4
-    var insetLeft: CGFloat = 4
-    var insetRight: CGFloat = 4
+    var insetTop: CGFloat = 8
+    var insetBottom: CGFloat = 8
+    var insetLeft: CGFloat = 8
+    var insetRight: CGFloat = 8
     
     override public var intrinsicContentSize: CGSize {
         var contentSize = super.intrinsicContentSize
@@ -38,5 +38,10 @@ class ToastLabel: UILabel {
     override func drawText(in rect: CGRect) {
         let insets: UIEdgeInsets = UIEdgeInsets(top: insetTop, left: insetLeft, bottom: insetBottom, right: insetRight)
         super.drawText(in: UIEdgeInsetsInsetRect(rect, insets))
+    }
+    
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        numberOfLines = 0
     }
 }

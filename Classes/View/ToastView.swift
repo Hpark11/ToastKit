@@ -28,22 +28,21 @@ class ToastView<T: UIView>: UIView, CAAnimationDelegate {
 
     var configuration: ToastConfiguration = ToastConfiguration() {
         didSet {
-            layer.backgroundColor = configuration.backgroundColor
+            //layer.backgroundColor = configuration.backgroundColor
             layer.cornerRadius = configuration.cornerRadius
             
-            alpha = 0.8
-            layer.shadowColor = UIColor.clear.cgColor
-            
+            backgroundColor = configuration.backgroundColor.withAlphaComponent(0.6)
+
             translatesAutoresizingMaskIntoConstraints = false
             content.translatesAutoresizingMaskIntoConstraints = false
             
             clipsToBounds = true
-            //isHidden = true
-            
+            layer.shadowColor = UIColor.clear.cgColor
+
             if let label = content as? ToastLabel {
-                label.textColor = .white
-                label.numberOfLines = 0
-                label.font = configuration.font
+                label.textColor = configuration.label.textColor
+                
+                label.font = configuration.label.font
             } else if let imageView = content as? UIImageView {
                 
             }
@@ -58,7 +57,7 @@ class ToastView<T: UIView>: UIView, CAAnimationDelegate {
         if let label = content as? ToastLabel {
             let size = CGSize(width: baseView.bounds.width - 32, height: baseView.bounds.height)
             let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-            return NSString(string: label.text!).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font: configuration.font], context: nil).size
+            return NSString(string: label.text!).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font: configuration.label.font], context: nil).size
         } else if let imageView = content as? UIImageView {
             return CGSize.zero
         } else {
@@ -106,10 +105,7 @@ class ToastView<T: UIView>: UIView, CAAnimationDelegate {
         return animation
     }
     
-    internal func popup(
-            duration:   Toast.Duration,
-            enter:      ToastEnter
-        ) {
+    internal func popup(duration: Toast.Duration, enter: ToastEnter) {
         
         func animate(with keyPath: KeyPath, from: Any?, to: Any?, duration: Toast.Duration) {
             let animation = generateLayerAnimation(keyPath: keyPath, from: from, to: to)
@@ -147,9 +143,7 @@ class ToastView<T: UIView>: UIView, CAAnimationDelegate {
         }
     }
     
-    internal func dismiss(
-            exit: ToastExit
-        ) {
+    internal func dismiss(exit: ToastExit) {
         
         func animate(with keyPath: KeyPath, from: Any?, to: Any?) {
             let animation = generateLayerAnimation(keyPath: keyPath, from: from, to: to)
@@ -163,7 +157,7 @@ class ToastView<T: UIView>: UIView, CAAnimationDelegate {
 
         func animate(with transition: UIViewAnimationOptions) {
             UIView.transition(with: self, duration: 0.72, options: [.curveEaseOut, transition], animations: {
-                self.alpha = 0
+                self.isHidden = true
             }, completion: { _ in
                 self.removeFromSuperview()
             })

@@ -22,6 +22,7 @@
 
 import UIKit
 
+@available(iOS 9.0, *)
 public struct Toast {
     public static var duration: Duration = .short
     public static var position: Position = .bottom
@@ -50,7 +51,6 @@ public struct Toast {
         }
     }
     
-    @available(iOS 9.0, *)
     public static func makeView<VC: UIViewController>(
             _ base:         VC,
             view:           UIView,
@@ -75,7 +75,6 @@ public struct Toast {
         toast(base, toastView: toastView, duration: duration, position: position, minimumInsets: minimumInsets, configuration: configuration)
     }
     
-    @available(iOS 9.0, *)
     public static func makeImage<VC: UIViewController>(
             _ base:         VC,
             image:          UIImage,
@@ -92,7 +91,6 @@ public struct Toast {
         toast(base, toastView: toastView, duration: duration, position: position, minimumInsets: minimumInsets, configuration: configuration)
     }
     
-    @available(iOS 9.0, *)
     public static func makeText<VC: UIViewController>(
             _ base:         VC,
             text:           String,
@@ -109,7 +107,6 @@ public struct Toast {
         toast(base, toastView: toastView, duration: duration, position: position, minimumInsets: minimumInsets, configuration: configuration)
     }
     
-    @available(iOS 9.0, *)
     private static func toast<VC: UIViewController, T>(
             _ base:         VC,
             toastView:      ToastView<T>,
@@ -126,4 +123,3 @@ public struct Toast {
         toastView.popup(duration: duration, enter: configuration.motion.enter)
     }
 }
-

@@ -22,7 +22,7 @@
 
 import Foundation
 
-protocol Concise {
+protocol Concised {
     var raw: String { get }
 }
 
@@ -32,7 +32,7 @@ enum KeyPath {
     case transform(Transform)
     case translation(Translation)
     
-    enum Color: String, Concise {
+    enum Color: String, Concised {
         case background = "backgroundColor"
         case border = "borderColor"
         
@@ -41,7 +41,7 @@ enum KeyPath {
         }
     }
     
-    enum Position: String, Concise {
+    enum Position: String, Concised {
         case x = "position.x"
         case y = "position.y"
         
@@ -50,7 +50,7 @@ enum KeyPath {
         }
     }
     
-    enum Transform: String, Concise {
+    enum Transform: String, Concised {
         case scale = "transform.scale"
         case rotation = "transform.rotation"
         
@@ -59,7 +59,7 @@ enum KeyPath {
         }
     }
     
-    enum Translation: String, Concise {
+    enum Translation: String, Concised {
         case x = "translation.x"
         
         var raw: String {

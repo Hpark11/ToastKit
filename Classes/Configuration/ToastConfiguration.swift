@@ -25,15 +25,22 @@ public struct ToastConfiguration {
     
     var motion: Motion = Motion()
     
+    var label: Label = Label()
+    
     var height: CGFloat = 40
     
-    var backgroundColor: CGColor = UIColor.black.cgColor
-    
-    var textColor: UIColor = .white
+    var backgroundColor: UIColor = UIColor.red
     
     var cornerRadius: CGFloat = 6
     
-    var font: UIFont = UIFont.systemFont(ofSize: 12)
+    struct ImageView {
+        
+    }
+    
+    struct Label {
+        var textColor: UIColor = .black
+        var font: UIFont = UIFont.systemFont(ofSize: 14)
+    }
     
     struct Motion {
         var enter: ToastEnter = .fadeIn

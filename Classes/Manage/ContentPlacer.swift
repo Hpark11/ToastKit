@@ -33,7 +33,9 @@ struct ContentPlacer {
         
         var constraints = [
             view.leadingAnchor.constraint(greaterThanOrEqualTo: baseView.leadingAnchor, constant: insets.left),
-            view.trailingAnchor.constraint(lessThanOrEqualTo: baseView.trailingAnchor, constant: insets.right)
+            view.trailingAnchor.constraint(lessThanOrEqualTo: baseView.trailingAnchor, constant: insets.right),
+            view.topAnchor.constraint(greaterThanOrEqualTo: baseView.topAnchor, constant: insets.top),
+            view.bottomAnchor.constraint(lessThanOrEqualTo: baseView.bottomAnchor, constant: insets.bottom),
         ]
         
         switch position {
