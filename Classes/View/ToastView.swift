@@ -22,20 +22,21 @@
 
 import UIKit
 
-class ToastView<T: UIView>: UIView {
+class ToastView<T: UIView>: UIView, CAAnimationDelegate {
     let content = T()
 
     var configuration: ToastConfiguration = ToastConfiguration() {
         didSet {
             layer.backgroundColor = configuration.backgroundColor
-            layer.cornerRadius = 6
+            layer.cornerRadius = configuration.cornerRadius
+            
+            layer.shadowColor = UIColor.clear.cgColor
+            
+            translatesAutoresizingMaskIntoConstraints = false
+            content.translatesAutoresizingMaskIntoConstraints = false
             
             clipsToBounds = true
             isHidden = true
-            layer.shadowColor = UIColor.clear.cgColor
-            translatesAutoresizingMaskIntoConstraints = false
-            
-            content.translatesAutoresizingMaskIntoConstraints = false
             
             if let label = content as? ToastLabel {
                 label.textColor = .white
@@ -48,6 +49,7 @@ class ToastView<T: UIView>: UIView {
             self.addSubview(content)
         }
     }
+    
     
     var contentSize: CGSize {
         guard let baseView = superview else { return CGSize.zero }
@@ -62,5 +64,42 @@ class ToastView<T: UIView>: UIView {
         } else {
             return CGSize.zero
         }
+    }
+    
+    @available(iOS 9.0, *)
+    internal func animateToast(keyPath: KeyPath, from: Any?, to: Any?) {
+        let animation: CASpringAnimation
+        
+        switch keyPath {
+        case .position(let pos): animation = CASpringAnimation(keyPath: pos.raw)
+        case .transform(let tf): animation = CASpringAnimation(keyPath: tf.raw)
+        case .translation(let ts): animation = CASpringAnimation(keyPath: ts.raw)
+        case .color(let clr): animation = CASpringAnimation(keyPath: clr.raw)
+        }
+        
+        animation.delegate = self
+        animation.fromValue = from
+        animation.toValue = to
+        //        slideAnimation.mass = 10.0
+        //        slideAnimation.initialVelocity = 100.0
+        //        slideAnimation.stiffness = 1500.0
+        //        slideAnimation.damping = 50.0
+        animation.duration = animation.settlingDuration
+        animation.setValue("toastIn", forKey: "name")
+        self.layer.add(animation, forKey: nil)
+    }
+    
+    internal func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        guard let name = anim.value(forKey: "name") as? String else { return }
+        if name == "toastIn" {
+            self.displayAndFinalizeToast()
+        }
+    }
+    
+    internal func displayAndFinalizeToast() {
+        MotionHandler.trigger(after: 3, completion: { [weak self] in
+            guard let strongSelf = self else { return }
+            MotionHandler.toastOut(strongSelf, exit: strongSelf.configuration.motion.exit)
+        })
     }
 }

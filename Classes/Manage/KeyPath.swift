@@ -21,3 +21,49 @@
  */
 
 import Foundation
+
+protocol Concise {
+    var raw: String { get }
+}
+
+enum KeyPath {
+    case color(Color)
+    case position(Position)
+    case transform(Transform)
+    case translation(Translation)
+    
+    enum Color: String, Concise {
+        case background = "backgroundColor"
+        case border = "borderColor"
+        
+        var raw: String {
+            return self.rawValue
+        }
+    }
+    
+    enum Position: String, Concise {
+        case x = "position.x"
+        case y = "position.y"
+        
+        var raw: String {
+            return self.rawValue
+        }
+    }
+    
+    enum Transform: String, Concise {
+        case scale = "transform.scale"
+        case rotation = "transform.rotation"
+        
+        var raw: String {
+            return self.rawValue
+        }
+    }
+    
+    enum Translation: String, Concise {
+        case x = "translation.x"
+        
+        var raw: String {
+            return self.rawValue
+        }
+    }
+}

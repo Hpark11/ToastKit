@@ -32,8 +32,8 @@ struct ContentPlacer {
         ) {
         
         var constraints = [
-            view.leadingAnchor.constraint(greaterThanOrEqualTo: baseView.leadingAnchor, constant: 16),
-            view.trailingAnchor.constraint(lessThanOrEqualTo: baseView.trailingAnchor, constant: 16)
+            view.leadingAnchor.constraint(greaterThanOrEqualTo: baseView.leadingAnchor, constant: insets.left),
+            view.trailingAnchor.constraint(lessThanOrEqualTo: baseView.trailingAnchor, constant: insets.right)
         ]
         
         switch position {
@@ -52,42 +52,41 @@ struct ContentPlacer {
     }
     
     internal static func placeContent<T>(
-            _ content:      T,
-            container:      ToastView<T>,
-            icon:           ToastConfiguration.Icon?
+            _ view:     ToastView<T>,
+            icon:       ToastConfiguration.Icon?
         ) {
         
         if let icon = icon {
             let iconView = UIImageView(image: icon.image)
             iconView.contentMode = .scaleToFill
             iconView.translatesAutoresizingMaskIntoConstraints = false
-            container.addSubview(iconView)
+            view.addSubview(iconView)
             
             var nc = [
                 iconView.widthAnchor.constraint(equalToConstant: icon.width),
                 iconView.heightAnchor.constraint(equalToConstant: icon.width),
                 
-                iconView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 4),
-                iconView.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+                iconView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 4),
+                iconView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
                 
-                content.leftAnchor.constraint(equalTo: iconView.rightAnchor, constant: 4),
-                content.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-                content.centerYAnchor.constraint(equalTo: container.centerYAnchor)
+                view.content.leftAnchor.constraint(equalTo: iconView.rightAnchor, constant: 4),
+                view.content.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                view.content.centerYAnchor.constraint(equalTo: view.centerYAnchor)
             ]
             
-            if container.contentSize.height > icon.width {
-                nc.append(container.heightAnchor.constraint(equalTo: content.heightAnchor))
+            if view.contentSize.height > icon.width {
+                nc.append(view.heightAnchor.constraint(equalTo: view.content.heightAnchor))
             } else {
-                nc.append(container.heightAnchor.constraint(equalTo: iconView.heightAnchor, constant: 4))
+                nc.append(view.heightAnchor.constraint(equalTo: iconView.heightAnchor, constant: 4))
             }
             
             NSLayoutConstraint.activate(nc)
         } else {
             NSLayoutConstraint.activate([
-                container.heightAnchor.constraint(equalTo: content.heightAnchor),
-                container.widthAnchor.constraint(equalTo: content.widthAnchor),
-                content.centerXAnchor.constraint(equalTo: container.centerXAnchor),
-                content.centerYAnchor.constraint(equalTo: container.centerYAnchor)
+                view.heightAnchor.constraint(equalTo: view.content.heightAnchor),
+                view.widthAnchor.constraint(equalTo: view.content.widthAnchor),
+                view.content.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                view.content.centerYAnchor.constraint(equalTo: view.centerYAnchor)
             ])
         }
     }

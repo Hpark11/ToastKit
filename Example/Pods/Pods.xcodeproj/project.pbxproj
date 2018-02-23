@@ -12,9 +12,9 @@
 		5A5EF433203C0693009C1133 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5EF432203C0693009C1133 /* Toast.swift */; };
 		5A5EF435203C2237009C1133 /* ToastEnter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5EF434203C2237009C1133 /* ToastEnter.swift */; };
 		5A5EF437203C2240009C1133 /* ToastExit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5EF436203C2240009C1133 /* ToastExit.swift */; };
-		5A5EF439203C2417009C1133 /* ToastAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5EF438203C2417009C1133 /* ToastAnimation.swift */; };
+		5A5EF439203C2417009C1133 /* KeyPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5EF438203C2417009C1133 /* KeyPath.swift */; };
 		5A5EF43B203C2B77009C1133 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5EF43A203C2B77009C1133 /* ToastView.swift */; };
-		5A5EF440203C2E69009C1133 /* MovingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5EF43F203C2E69009C1133 /* MovingHandler.swift */; };
+		5A5EF440203C2E69009C1133 /* MotionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5EF43F203C2E69009C1133 /* MotionHandler.swift */; };
 		5A5EF442203C2EC8009C1133 /* ContentPlacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5EF441203C2EC8009C1133 /* ContentPlacer.swift */; };
 		5A5EF444203C3034009C1133 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5EF443203C3034009C1133 /* ViewFactory.swift */; };
 		5A5EF446203C318D009C1133 /* ToastConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5EF445203C318D009C1133 /* ToastConfiguration.swift */; };
@@ -55,9 +55,9 @@
 		5A5EF432203C0693009C1133 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		5A5EF434203C2237009C1133 /* ToastEnter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastEnter.swift; sourceTree = "<group>"; };
 		5A5EF436203C2240009C1133 /* ToastExit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastExit.swift; sourceTree = "<group>"; };
-		5A5EF438203C2417009C1133 /* ToastAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastAnimation.swift; sourceTree = "<group>"; };
+		5A5EF438203C2417009C1133 /* KeyPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPath.swift; sourceTree = "<group>"; };
 		5A5EF43A203C2B77009C1133 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
-		5A5EF43F203C2E69009C1133 /* MovingHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovingHandler.swift; sourceTree = "<group>"; };
+		5A5EF43F203C2E69009C1133 /* MotionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionHandler.swift; sourceTree = "<group>"; };
 		5A5EF441203C2EC8009C1133 /* ContentPlacer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPlacer.swift; sourceTree = "<group>"; };
 		5A5EF443203C3034009C1133 /* ViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
 		5A5EF445203C318D009C1133 /* ToastConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastConfiguration.swift; sourceTree = "<group>"; };
@@ -199,8 +199,8 @@
 		5A5EF43C203C2E3C009C1133 /* Manage */ = {
 			isa = PBXGroup;
 			children = (
-				5A5EF438203C2417009C1133 /* ToastAnimation.swift */,
-				5A5EF43F203C2E69009C1133 /* MovingHandler.swift */,
+				5A5EF438203C2417009C1133 /* KeyPath.swift */,
+				5A5EF43F203C2E69009C1133 /* MotionHandler.swift */,
 				5A5EF441203C2EC8009C1133 /* ContentPlacer.swift */,
 			);
 			path = Manage;
@@ -399,13 +399,13 @@
 			files = (
 				5A5EF442203C2EC8009C1133 /* ContentPlacer.swift in Sources */,
 				C782138D8B5A337F492013B8FFE4E4A1 /* ToastKit-dummy.m in Sources */,
-				5A5EF439203C2417009C1133 /* ToastAnimation.swift in Sources */,
+				5A5EF439203C2417009C1133 /* KeyPath.swift in Sources */,
 				5A5EF435203C2237009C1133 /* ToastEnter.swift in Sources */,
 				5A5EF444203C3034009C1133 /* ViewFactory.swift in Sources */,
 				5A5EF433203C0693009C1133 /* Toast.swift in Sources */,
 				5A5EF446203C318D009C1133 /* ToastConfiguration.swift in Sources */,
 				5A5EF43B203C2B77009C1133 /* ToastView.swift in Sources */,
-				5A5EF440203C2E69009C1133 /* MovingHandler.swift in Sources */,
+				5A5EF440203C2E69009C1133 /* MotionHandler.swift in Sources */,
 				5A5EF437203C2240009C1133 /* ToastExit.swift in Sources */,
 				5A5EF448203C3816009C1133 /* ToastLabel.swift in Sources */,
 			);

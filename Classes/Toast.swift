@@ -22,45 +22,102 @@
 
 import UIKit
 
-open class Toast: NSObject {
-    enum Position {
+public struct Toast {
+    public static var duration: Duration = .short
+    public static var position: Position = .bottom
+    public static var minimumInsets: UIEdgeInsets = UIEdgeInsets(top: 40, left: 16, bottom: 40, right: 16)
+    public static var configuration: ToastConfiguration = ToastConfiguration()
+    
+    public enum Position {
         case top
         case bottom
         case center
     }
     
-    enum Duration {
+    public enum Duration {
         case short
         case normal
         case long
-        case custom(Double)
-    }
-    
-    static func makeView<T: UIViewController>(_ base: T, view: UIView, position: Position = .bottom) {
+        case custom(TimeInterval)
         
-    }
-    
-    static func makeImage<T: UIViewController>(_ base: T, image: UIImage, position: Position = .bottom) {
-        
+        static func time(_ value: Duration) -> TimeInterval {
+            switch value {
+                case .short: return 3.0
+                case .normal: return 4.5
+                case .long: return 6.0
+                case .custom(let time): return time
+            }
+        }
     }
     
     @available(iOS 9.0, *)
-    static func makeText<T: UIViewController>(
-            _ base:         T,
+    public static func makeView<VC: UIViewController>(
+            _ base:         VC,
+            view:           UIView,
+            duration:       Duration = duration,
+            position:       Position = position,
+            minimumInsets:  UIEdgeInsets = minimumInsets,
+            configuration:  ToastConfiguration = configuration
+        ) {
+    
+        let toastView = ViewFactory.createToastView(UIView.self, configuration: configuration)
+        base.view.addSubview(toastView)
+        //toastView.content.add
+        
+        toast(base, toastView: toastView, duration: duration, position: position, minimumInsets: minimumInsets, configuration: configuration)
+    }
+    
+    @available(iOS 9.0, *)
+    public static func makeImage<VC: UIViewController>(
+            _ base:         VC,
+            image:          UIImage,
+            duration:       Duration = duration,
+            position:       Position = position,
+            minimumInsets:  UIEdgeInsets = minimumInsets,
+            configuration:  ToastConfiguration = configuration
+        ) {
+        
+        let toastView = ViewFactory.createToastView(UIImageView.self, configuration: configuration)
+        base.view.addSubview(toastView)
+        toastView.content.image = image
+        
+        toast(base, toastView: toastView, duration: duration, position: position, minimumInsets: minimumInsets, configuration: configuration)
+    }
+    
+    @available(iOS 9.0, *)
+    public static func makeText<VC: UIViewController>(
+            _ base:         VC,
             text:           String,
-            position:       Position = .bottom,
-            minimumInsets:  UIEdgeInsets = UIEdgeInsets(top: 40, left: 16, bottom: 40, right: 16),
-            configuration:  ToastConfiguration = ToastConfiguration()
+            duration:       Duration = duration,
+            position:       Position = position,
+            minimumInsets:  UIEdgeInsets = minimumInsets,
+            configuration:  ToastConfiguration = configuration
         ) {
         
         let toastView = ViewFactory.createToastView(ToastLabel.self, configuration: configuration)
         base.view.addSubview(toastView)
-        
         toastView.content.text = text
-        ContentPlacer.placeToastView(toastView, baseView: base.view, position: position, insets: minimumInsets)
-        ContentPlacer.placeContent(toastView.content, container: toastView, icon: configuration.icon)
+        
+        toast(base, toastView: toastView, duration: duration, position: position, minimumInsets: minimumInsets, configuration: configuration)
+    }
     
+    @available(iOS 9.0, *)
+    private static func toast<VC: UIViewController, T>(
+            _ base:         VC,
+            toastView:      ToastView<T>,
+            duration:       Duration,
+            position:       Position,
+            minimumInsets:  UIEdgeInsets,
+            configuration:  ToastConfiguration
+        ) {
+        
+        ContentPlacer.placeToastView(toastView, baseView: base.view, position: position, insets: minimumInsets)
+        ContentPlacer.placeContent(toastView, icon: configuration.icon)
         base.view.layoutIfNeeded()
+        
+        MotionHandler.toastIn(toastView, enter: configuration.motion.enter) { _ in
+            toastView.displayAndFinalizeToast()
+        }
     }
 }
 

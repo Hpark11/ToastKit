@@ -21,10 +21,10 @@
  */
 
 enum ToastExit {
-    case dashToLeft
-    case dashToRight
-    case dashToTop
-    case dashToBottom
+    case slideToLeft
+    case slideToRight
+    case slideToTop
+    case slideToBottom
     case flipFromLeft
     case flipFromRight
     case flipFromTop

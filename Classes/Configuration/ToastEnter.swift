@@ -21,10 +21,10 @@
  */
 
 enum ToastEnter {
-    case dashFromLeft
-    case dashFromRight
-    case dashFromTop
-    case dashFromBottom
+    case slideFromLeft
+    case slideFromright
+    case slideFromTop
+    case slideFromBottom
     case flipFromLeft
     case flipFromRight
     case flipFromTop

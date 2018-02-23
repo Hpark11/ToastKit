@@ -13,10 +13,14 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        //Toast.m
         
         //Toast.printSomeThing()
         // Do any additional setup after loading the view, typically from a nib.
     }
-
+    
+    @IBAction func buttonTapped(_ sender: Any) {
+        Toast.makeText(self, text: "Hello~")
+    }
 }
 

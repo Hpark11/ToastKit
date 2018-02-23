@@ -20,10 +20,10 @@
  *  THE SOFTWARE.
  */
 
-import Foundation
-
-struct ToastConfiguration {
+public struct ToastConfiguration {
     var icon: Icon?
+    
+    var motion: Motion = Motion()
     
     var height: CGFloat = 40
     
@@ -35,15 +35,17 @@ struct ToastConfiguration {
     
     var font: UIFont = UIFont.systemFont(ofSize: 12)
     
-    var enter: ToastEnter = .fadeIn
-    var exit: ToastExit = .fadeOut
-    
-    struct Icon {
-        let image: UIImage
-        let width: CGFloat
+    struct Motion {
+        var enter: ToastEnter = .slideFromLeft
+        var exit: ToastExit = .slideToTop
     }
     
-    init() {
+    struct Icon {
+        public let image: UIImage
+        public let width: CGFloat
+    }
+    
+    public init() {
         
     }
 }
