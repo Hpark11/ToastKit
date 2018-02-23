@@ -36,8 +36,8 @@ public struct ToastConfiguration {
     var font: UIFont = UIFont.systemFont(ofSize: 12)
     
     struct Motion {
-        var enter: ToastEnter = .slideFromLeft
-        var exit: ToastExit = .slideToTop
+        var enter: ToastEnter = .fadeIn
+        var exit: ToastExit = .fadeOut
     }
     
     struct Icon {
@@ -47,5 +47,9 @@ public struct ToastConfiguration {
     
     public init() {
         
+    }
+    
+    public init(enter: ToastEnter, exit: ToastExit) {
+        motion = Motion(enter: enter, exit: exit)
     }
 }

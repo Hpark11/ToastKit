@@ -20,7 +20,7 @@
  *  THE SOFTWARE.
  */
 
-enum ToastEnter {
+public enum ToastEnter {
     case slideFromLeft
     case slideFromright
     case slideFromTop

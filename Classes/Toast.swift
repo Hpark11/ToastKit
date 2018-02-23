@@ -62,7 +62,15 @@ public struct Toast {
     
         let toastView = ViewFactory.createToastView(UIView.self, configuration: configuration)
         base.view.addSubview(toastView)
-        //toastView.content.add
+        toastView.content.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            toastView.content.heightAnchor.constraint(equalTo: view.heightAnchor),
+            toastView.content.widthAnchor.constraint(equalTo: view.widthAnchor),
+            view.centerXAnchor.constraint(equalTo: toastView.content.centerXAnchor),
+            view.centerYAnchor.constraint(equalTo: toastView.content.centerYAnchor)
+        ])
         
         toast(base, toastView: toastView, duration: duration, position: position, minimumInsets: minimumInsets, configuration: configuration)
     }
@@ -115,9 +123,7 @@ public struct Toast {
         ContentPlacer.placeContent(toastView, icon: configuration.icon)
         base.view.layoutIfNeeded()
         
-        MotionHandler.toastIn(toastView, enter: configuration.motion.enter) { _ in
-            toastView.displayAndFinalizeToast()
-        }
+        toastView.popup(duration: duration, enter: configuration.motion.enter)
     }
 }
 

@@ -22,6 +22,7 @@
 
 import UIKit
 
+@available(iOS 9.0, *)
 class ViewFactory {
     internal static func createToastView<T: UIView>(
             _ contentType:  T.Type,

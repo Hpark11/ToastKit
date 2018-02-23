@@ -20,7 +20,7 @@
  *  THE SOFTWARE.
  */
 
-enum ToastExit {
+public enum ToastExit {
     case slideToLeft
     case slideToRight
     case slideToTop

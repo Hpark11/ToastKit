@@ -22,21 +22,23 @@
 
 import UIKit
 
+@available(iOS 9.0, *)
 class ToastView<T: UIView>: UIView, CAAnimationDelegate {
-    let content = T()
+    var content = T()
 
     var configuration: ToastConfiguration = ToastConfiguration() {
         didSet {
             layer.backgroundColor = configuration.backgroundColor
             layer.cornerRadius = configuration.cornerRadius
             
+            alpha = 0.8
             layer.shadowColor = UIColor.clear.cgColor
             
             translatesAutoresizingMaskIntoConstraints = false
             content.translatesAutoresizingMaskIntoConstraints = false
             
             clipsToBounds = true
-            isHidden = true
+            //isHidden = true
             
             if let label = content as? ToastLabel {
                 label.textColor = .white
@@ -49,15 +51,13 @@ class ToastView<T: UIView>: UIView, CAAnimationDelegate {
             self.addSubview(content)
         }
     }
-    
-    
+
     var contentSize: CGSize {
         guard let baseView = superview else { return CGSize.zero }
         
         if let label = content as? ToastLabel {
             let size = CGSize(width: baseView.bounds.width - 32, height: baseView.bounds.height)
             let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-            
             return NSString(string: label.text!).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font: configuration.font], context: nil).size
         } else if let imageView = content as? UIImageView {
             return CGSize.zero
@@ -66,15 +66,33 @@ class ToastView<T: UIView>: UIView, CAAnimationDelegate {
         }
     }
     
-    @available(iOS 9.0, *)
-    internal func animateToast(keyPath: KeyPath, from: Any?, to: Any?) {
+    internal func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        
+        guard let name = anim.value(forKey: "name") as? String,
+            let interval = anim.value(forKey: "duration") as? TimeInterval else { return }
+        if name == "toastIn" {
+            displayAndFinalizeToast(interval: interval)
+        } else if name == "toastOut" {
+            layer.removeAllAnimations()
+            removeFromSuperview()
+        }
+    }
+    
+    internal func displayAndFinalizeToast(interval: TimeInterval) {
+        MotionHandler.trigger(after: interval, completion: { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.dismiss(exit: strongSelf.configuration.motion.exit)
+        })
+    }
+    
+    private func generateLayerAnimation(keyPath: KeyPath, from: Any?, to: Any?) -> CASpringAnimation {
         let animation: CASpringAnimation
         
         switch keyPath {
-        case .position(let pos): animation = CASpringAnimation(keyPath: pos.raw)
-        case .transform(let tf): animation = CASpringAnimation(keyPath: tf.raw)
-        case .translation(let ts): animation = CASpringAnimation(keyPath: ts.raw)
-        case .color(let clr): animation = CASpringAnimation(keyPath: clr.raw)
+            case .position(let pos): animation = CASpringAnimation(keyPath: pos.raw)
+            case .transform(let tf): animation = CASpringAnimation(keyPath: tf.raw)
+            case .translation(let ts): animation = CASpringAnimation(keyPath: ts.raw)
+            case .color(let clr): animation = CASpringAnimation(keyPath: clr.raw)
         }
         
         animation.delegate = self
@@ -85,21 +103,86 @@ class ToastView<T: UIView>: UIView, CAAnimationDelegate {
         //        slideAnimation.stiffness = 1500.0
         //        slideAnimation.damping = 50.0
         animation.duration = animation.settlingDuration
-        animation.setValue("toastIn", forKey: "name")
-        self.layer.add(animation, forKey: nil)
+        return animation
     }
     
-    internal func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-        guard let name = anim.value(forKey: "name") as? String else { return }
-        if name == "toastIn" {
-            self.displayAndFinalizeToast()
+    internal func popup(
+            duration:   Toast.Duration,
+            enter:      ToastEnter
+        ) {
+        
+        func animate(with keyPath: KeyPath, from: Any?, to: Any?, duration: Toast.Duration) {
+            let animation = generateLayerAnimation(keyPath: keyPath, from: from, to: to)
+            animation.setValue(Toast.Duration.time(duration), forKey: "duration")
+            animation.setValue("toastIn", forKey: "name")
+            self.layer.add(animation, forKey: nil)
+        }
+        
+        func animate(with transition: UIViewAnimationOptions, duration: Toast.Duration) {
+            UIView.transition(with: self, duration: 0.01, options: [.curveEaseOut, .transitionCrossDissolve], animations: {
+                self.isHidden = true
+            }, completion: { _ in
+                UIView.transition(with: self, duration: 0.72, options: [.curveEaseIn, transition], animations: {
+                    self.isHidden = false
+                }, completion: { _ in
+                    self.displayAndFinalizeToast(interval: Toast.Duration.time(duration))
+                })
+            })
+        }
+        
+        guard let baseView = self.superview else { return }
+        
+        switch enter {
+            case .flipFromLeft:     animate(with: .transitionFlipFromLeft, duration: duration)
+            case .flipFromRight:    animate(with: .transitionFlipFromRight, duration: duration)
+            case .flipFromTop:      animate(with: .transitionFlipFromTop, duration: duration)
+            case .flipFromBottom:   animate(with: .transitionFlipFromBottom, duration: duration)
+            case .curlDown:         animate(with: .transitionCurlDown, duration: duration)
+            case .fadeIn:           animate(with: .transitionCrossDissolve, duration: duration)
+            case .scaleUp:          animate(with: .transform(.scale), from: 0.25, to: 1, duration: duration)
+            case .slideFromLeft:    animate(with: .position(.x), from: -(bounds.width), to: layer.position.x, duration: duration)
+            case .slideFromright:   animate(with: .position(.x), from: baseView.bounds.width, to: layer.position.x, duration: duration)
+            case .slideFromTop:     animate(with: .position(.y), from: -(bounds.height), to: layer.position.y, duration: duration)
+            case .slideFromBottom:  animate(with: .position(.y), from: baseView.bounds.height, to: layer.position.y, duration: duration)
         }
     }
     
-    internal func displayAndFinalizeToast() {
-        MotionHandler.trigger(after: 3, completion: { [weak self] in
-            guard let strongSelf = self else { return }
-            MotionHandler.toastOut(strongSelf, exit: strongSelf.configuration.motion.exit)
-        })
+    internal func dismiss(
+            exit: ToastExit
+        ) {
+        
+        func animate(with keyPath: KeyPath, from: Any?, to: Any?) {
+            let animation = generateLayerAnimation(keyPath: keyPath, from: from, to: to)
+            animation.setValue("toastOut", forKey: "name")
+            animation.fillMode = kCAFillModeForwards
+            animation.isRemovedOnCompletion = false
+            
+            // animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+            self.layer.add(animation, forKey: nil)
+        }
+
+        func animate(with transition: UIViewAnimationOptions) {
+            UIView.transition(with: self, duration: 0.72, options: [.curveEaseOut, transition], animations: {
+                self.alpha = 0
+            }, completion: { _ in
+                self.removeFromSuperview()
+            })
+        }
+        
+        guard let baseView = self.superview else { return }
+        
+        switch exit {
+            case .flipFromLeft:     animate(with: .transitionFlipFromLeft)
+            case .flipFromRight:    animate(with: .transitionFlipFromRight)
+            case .flipFromTop:      animate(with: .transitionFlipFromTop)
+            case .flipFromBottom:   animate(with: .transitionFlipFromBottom)
+            case .curlUp:           animate(with: .transitionCurlDown)
+            case .fadeOut:          animate(with: .transitionCrossDissolve)
+            case .scaleDown:        animate(with: .transform(.scale), from: 1.0, to: 0.0)
+            case .slideToLeft:      animate(with: .position(.x), from: layer.position.x, to: -(bounds.width + 12))
+            case .slideToRight:     animate(with: .position(.x), from: layer.position.x, to: baseView.bounds.width + 12)
+            case .slideToTop:       animate(with: .position(.y), from: layer.position.y, to: -(bounds.height + 12))
+            case .slideToBottom:    animate(with: .position(.y), from: layer.position.y, to: baseView.bounds.height + 12)
+        }
     }
 }
