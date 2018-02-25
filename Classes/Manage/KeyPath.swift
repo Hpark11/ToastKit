@@ -61,6 +61,7 @@ enum KeyPath {
     
     enum Translation: String, Concised {
         case x = "translation.x"
+        case y = "translation.y"
         
         var raw: String {
             return self.rawValue

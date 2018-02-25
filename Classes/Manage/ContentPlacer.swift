@@ -58,7 +58,7 @@ struct ContentPlacer {
             icon:       ToastConfiguration.Icon?
         ) {
         
-        if let icon = icon {
+        if let icon = icon, let _ = view.content as? ToastLabel {
             let iconView = UIImageView(image: icon.image)
             iconView.contentMode = .scaleToFill
             iconView.translatesAutoresizingMaskIntoConstraints = false

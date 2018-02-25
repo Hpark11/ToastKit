@@ -179,10 +179,10 @@ class ToastView<T: UIView>: UIView, CAAnimationDelegate {
         let animation: CASpringAnimation
         
         switch keyPath {
-        case .position(let pos): animation = CASpringAnimation(keyPath: pos.raw)
-        case .transform(let tf): animation = CASpringAnimation(keyPath: tf.raw)
-        case .translation(let ts): animation = CASpringAnimation(keyPath: ts.raw)
-        case .color(let clr): animation = CASpringAnimation(keyPath: clr.raw)
+            case .position(let pos):    animation = CASpringAnimation(keyPath: pos.raw)
+            case .transform(let tf):    animation = CASpringAnimation(keyPath: tf.raw)
+            case .translation(let ts):  animation = CASpringAnimation(keyPath: ts.raw)
+            case .color(let clr):       animation = CASpringAnimation(keyPath: clr.raw)
         }
         
         animation.delegate = self

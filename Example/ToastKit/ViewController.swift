@@ -31,7 +31,7 @@ class ViewController: UIViewController {
         custom.isHidden = false
         
         view.addSubview(custom)
-        Toast.makeView(self, view: custom)
+        Toast.makeView(self, view: custom, minimumInsets: UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2), configuration: ToastConfiguration(iconImage: UIImage(named: "alarm")!, width: 40))
         //Toast.makeText(self, text: "Hello~")
         //Toast.makeText(self, text: "Goody", duration: .normal, position: .center, configuration: ToastConfiguration(enter: .fadeIn, exit: .curlUp))
         Toast.makeImage(self, image: UIImage(named: "abstract")!, position: .center, minimumInsets: UIEdgeInsets(top: 40, left: 2, bottom: 40, right: 2), configuration: ToastConfiguration(enter: .flipFromLeft, exit: .flipFromBottom))

@@ -24,17 +24,15 @@ public struct ToastConfiguration {
     var icon: Icon?
     
     var motion: Motion = Motion()
-    
     var label: Label = Label()
     
-    var height: CGFloat = 40
-    
     var backgroundColor: UIColor = UIColor.red
+    var backgroundAlpha: CGFloat = 0.8
     
     var cornerRadius: CGFloat = 6
     
     struct ImageView {
-        
+        // var contentMode
     }
     
     struct Label {
@@ -48,12 +46,19 @@ public struct ToastConfiguration {
     }
     
     struct Icon {
-        public let image: UIImage
-        public let width: CGFloat
+        let image: UIImage
+        let width: CGFloat
     }
     
     public init() {
         
+    }
+    
+    public init(
+            iconImage: UIImage,
+            width: CGFloat
+        ) {
+        icon = Icon(image: iconImage, width: width)
     }
     
     public init(
@@ -63,4 +68,13 @@ public struct ToastConfiguration {
         
         motion = Motion(enter: enter, exit: exit)
     }
+    
+    public init(
+            textColor: UIColor,
+            font: UIFont
+        ) {
+        label = Label(textColor: textColor, font: font)
+    }
+    
+    
 }
