@@ -20,18 +20,45 @@
  *  THE SOFTWARE.
  */
 
-import UIKit
-
-@available(iOS 9.0, *)
-class ViewFactory {
-    internal static func createToastView<T: UIView>(
-            _ contentType:  T.Type,
-            configuration:  ToastConfiguration,
-            textInsets:     UIEdgeInsets? = nil
-        ) -> ToastView<T> {
-        
-        let view = ToastView<T>()
-        view.configuration = configuration
-        return view
+public enum ToastSpring {
+    case none
+    case weak
+    case medium
+    case hard
+    
+    internal static func damping(_ value: ToastSpring) -> CGFloat {
+        switch value {
+        case .none: return 100.0
+        case .weak: return 12.0
+        case .medium: return 10.0
+        case .hard: return 8.0
+        }
+    }
+    
+    internal static func mass(_ value: ToastSpring) -> CGFloat {
+        switch value {
+        case .none: return 10.0
+        case .weak: return 0.8
+        case .medium: return 1.0
+        case .hard: return 1.6
+        }
+    }
+    
+    internal static func stiffness(_ value: ToastSpring) -> CGFloat {
+        switch value {
+        case .none: return 150.0
+        case .weak: return 250.0
+        case .medium: return 100.0
+        case .hard: return 200.0
+        }
+    }
+    
+    internal static func velocity(_ value: ToastSpring) -> CGFloat {
+        switch value {
+        case .none: return 1.0
+        case .weak: return 0.0
+        case .medium: return 0.0
+        case .hard: return 0.4
+        }
     }
 }

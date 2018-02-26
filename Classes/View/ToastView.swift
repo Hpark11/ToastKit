@@ -25,44 +25,43 @@ import UIKit
 @available(iOS 9.0, *)
 class ToastView<T: UIView>: UIView, CAAnimationDelegate {
     var content = T()
+    var textInsets: UIEdgeInsets?
 
     var configuration: ToastConfiguration = ToastConfiguration() {
         didSet {
-            //layer.backgroundColor = configuration.backgroundColor
             layer.cornerRadius = configuration.cornerRadius
-            
-            backgroundColor = configuration.backgroundColor.withAlphaComponent(0.6)
-
-            translatesAutoresizingMaskIntoConstraints = false
-            content.translatesAutoresizingMaskIntoConstraints = false
-            
-            clipsToBounds = true
-            layer.shadowColor = UIColor.clear.cgColor
+            backgroundColor = configuration.backgroundColor.withAlphaComponent(configuration.backgroundAlpha)
 
             if let label = content as? ToastLabel {
                 label.textColor = configuration.label.textColor
-                
                 label.font = configuration.label.font
-            } else if let imageView = content as? UIImageView {
-                
             }
-            
             self.addSubview(content)
         }
     }
-
+    
     var contentSize: CGSize {
         guard let baseView = superview else { return CGSize.zero }
         
         if let label = content as? ToastLabel {
-            let size = CGSize(width: baseView.bounds.width - 32, height: baseView.bounds.height)
+            let leftInset = textInsets?.left ?? Toast.minimumInsets.left
+            let rightInset = textInsets?.right ?? Toast.minimumInsets.right
+            
+            let size = CGSize(width: baseView.bounds.width - (leftInset + rightInset), height: baseView.bounds.height)
             let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
             return NSString(string: label.text!).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font: configuration.label.font], context: nil).size
-        } else if let imageView = content as? UIImageView {
-            return CGSize.zero
-        } else {
-            return CGSize.zero
         }
+        
+        return content.bounds.size
+    }
+    
+    internal override func didMoveToWindow() {
+        super.didMoveToWindow()
+        translatesAutoresizingMaskIntoConstraints = false
+        content.translatesAutoresizingMaskIntoConstraints = false
+        
+        clipsToBounds = true
+        layer.shadowColor = UIColor.clear.cgColor
     }
     
     internal func animationDidStop(
@@ -71,7 +70,10 @@ class ToastView<T: UIView>: UIView, CAAnimationDelegate {
         ) {
         
         guard let name = anim.value(forKey: "name") as? String,
-            let interval = anim.value(forKey: "duration") as? TimeInterval else { return }
+            let interval = anim.value(forKey: "duration") as? TimeInterval else {
+            return
+        }
+        
         if name == "toastIn" {
             displayAndFinalizeToast(interval: interval)
         } else if name == "toastOut" {
@@ -140,14 +142,17 @@ class ToastView<T: UIView>: UIView, CAAnimationDelegate {
             animation.setValue("toastOut", forKey: "name")
             animation.fillMode = kCAFillModeForwards
             animation.isRemovedOnCompletion = false
-            
-            // animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
             self.layer.add(animation, forKey: nil)
         }
 
         func animate(with transition: UIViewAnimationOptions) {
             UIView.transition(with: self, duration: 0.72, options: [.curveEaseOut, transition], animations: {
-                self.isHidden = true
+                if transition == .transitionCrossDissolve || transition == .transitionCurlDown {
+                    self.alpha = 0
+                } else {
+                    self.isHidden = true
+                }
             }, completion: { _ in
                 self.removeFromSuperview()
             })
@@ -160,13 +165,13 @@ class ToastView<T: UIView>: UIView, CAAnimationDelegate {
             case .flipFromRight:    animate(with: .transitionFlipFromRight)
             case .flipFromTop:      animate(with: .transitionFlipFromTop)
             case .flipFromBottom:   animate(with: .transitionFlipFromBottom)
-            case .curlUp:           animate(with: .transitionCurlDown)
+            case .curlUp:           animate(with: .transitionCurlUp)
             case .fadeOut:          animate(with: .transitionCrossDissolve)
             case .scaleDown:        animate(with: .transform(.scale), from: 1.0, to: 0.0)
             case .slideToLeft:      animate(with: .position(.x), from: layer.position.x, to: -(bounds.width + 12))
-            case .slideToRight:     animate(with: .position(.x), from: layer.position.x, to: baseView.bounds.width + 12)
+            case .slideToRight:     animate(with: .position(.x), from: layer.position.x, to: baseView.bounds.width + bounds.width + 12)
             case .slideToTop:       animate(with: .position(.y), from: layer.position.y, to: -(bounds.height + 12))
-            case .slideToBottom:    animate(with: .position(.y), from: layer.position.y, to: baseView.bounds.height + 12)
+            case .slideToBottom:    animate(with: .position(.y), from: layer.position.y, to: baseView.bounds.height + bounds.height + 12)
         }
     }
     
@@ -188,10 +193,12 @@ class ToastView<T: UIView>: UIView, CAAnimationDelegate {
         animation.delegate = self
         animation.fromValue = from
         animation.toValue = to
-        //        slideAnimation.mass = 10.0
-        //        slideAnimation.initialVelocity = 100.0
-        //        slideAnimation.stiffness = 1500.0
-        //        slideAnimation.damping = 50.0
+        
+        animation.damping = ToastSpring.damping(configuration.motion.spring)
+        animation.mass = ToastSpring.mass(configuration.motion.spring)
+        animation.stiffness = ToastSpring.stiffness(configuration.motion.spring)
+        animation.initialVelocity = ToastSpring.velocity(configuration.motion.spring)
+        
         animation.duration = animation.settlingDuration
         return animation
     }

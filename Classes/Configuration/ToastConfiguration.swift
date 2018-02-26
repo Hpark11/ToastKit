@@ -21,60 +21,76 @@
  */
 
 public struct ToastConfiguration {
-    var icon: Icon?
+    public var icon: Icon?
+    public var motion: Motion = Motion()
+    public var label: Label = Label()
     
-    var motion: Motion = Motion()
-    var label: Label = Label()
+    public var backgroundColor: UIColor = .black
+    public var backgroundAlpha: CGFloat = 0.8
+    public var cornerRadius: CGFloat = 6
     
-    var backgroundColor: UIColor = UIColor.red
-    var backgroundAlpha: CGFloat = 0.8
-    
-    var cornerRadius: CGFloat = 6
-    
-    struct ImageView {
-        // var contentMode
-    }
-    
-    struct Label {
-        var textColor: UIColor = .black
+    public struct Label {
+        var textColor: UIColor = .white
         var font: UIFont = UIFont.systemFont(ofSize: 14)
     }
     
-    struct Motion {
+    public struct Motion {
         var enter: ToastEnter = .fadeIn
         var exit: ToastExit = .fadeOut
+        var spring: ToastSpring = .none
     }
     
-    struct Icon {
+    public struct Icon {
         let image: UIImage
         let width: CGFloat
     }
     
-    public init() {
+    public init() {}
+    
+    public init(
+            backgroundColor: UIColor,
+            backgroundAlpha: CGFloat,
+            cornerRadius: CGFloat
+        ) {
         
+        self.backgroundColor = backgroundColor
+        self.backgroundAlpha = backgroundAlpha
+        self.cornerRadius = cornerRadius
     }
     
     public init(
             iconImage: UIImage,
             width: CGFloat
         ) {
+        
         icon = Icon(image: iconImage, width: width)
     }
     
     public init(
             enter: ToastEnter,
-            exit: ToastExit
+            exit: ToastExit,
+            spring: ToastSpring = .none
         ) {
         
-        motion = Motion(enter: enter, exit: exit)
+        motion = Motion(enter: enter, exit: exit, spring: spring)
     }
     
     public init(
             textColor: UIColor,
             font: UIFont
         ) {
+        
         label = Label(textColor: textColor, font: font)
     }
     
-    
+    public init(
+            label: Label,
+            motion: Motion,
+            icon: Icon? = nil
+        ) {
+        
+        self.label = label
+        self.motion = motion
+        self.icon = icon
+    }
 }

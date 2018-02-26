@@ -46,7 +46,7 @@ public struct Toast {
                 case .short: return 3.0
                 case .normal: return 4.5
                 case .long: return 6.0
-                case .custom(let time): return time
+                case .custom(let seconds): return seconds
             }
         }
     }
@@ -59,7 +59,7 @@ public struct Toast {
             minimumInsets:  UIEdgeInsets = minimumInsets,
             configuration:  ToastConfiguration = configuration
         ) {
-    
+        
         let toastView = ViewFactory.createToastView(UIView.self, configuration: configuration)
         base.view.addSubview(toastView)
         toastView.content.addSubview(view)
@@ -100,7 +100,7 @@ public struct Toast {
             configuration:  ToastConfiguration = configuration
         ) {
         
-        let toastView = ViewFactory.createToastView(ToastLabel.self, configuration: configuration)
+        let toastView = ViewFactory.createToastView(ToastLabel.self, configuration: configuration, textInsets: minimumInsets)
         base.view.addSubview(toastView)
         toastView.content.text = text
         
