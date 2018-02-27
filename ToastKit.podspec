@@ -24,19 +24,19 @@ Pod::Spec.new do |s|
   s.homepage         = 'https://github.com/hpark11/ToastKit'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'hpark11' => 'qkrgustnrk@naver.co.kr' }
+  s.author           = { 'hpark11' => 'qkrgustnrk@naver.com' }
   s.source           = { :git => 'https://github.com/hpark11/ToastKit.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
 
-  s.source_files = 'ToastKit/Classes/**/*'
+  s.source_files = 'Classes/**/*.swift'
   
   # s.resource_bundles = {
   #   'ToastKit' => ['ToastKit/Assets/*.png']
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
+  s.frameworks = 'UIKit'
   # s.dependency 'AFNetworking', '~> 2.3'
 end
