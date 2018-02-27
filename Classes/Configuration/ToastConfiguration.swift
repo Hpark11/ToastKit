@@ -30,19 +30,39 @@ public struct ToastConfiguration {
     public var cornerRadius: CGFloat = 6
     
     public struct Label {
-        var textColor: UIColor = .white
-        var font: UIFont = UIFont.systemFont(ofSize: 14)
+        public var textColor: UIColor = .white
+        public var font: UIFont = UIFont.systemFont(ofSize: 14)
     }
     
     public struct Motion {
-        var enter: ToastEnter = .fadeIn
-        var exit: ToastExit = .fadeOut
-        var spring: ToastSpring = .none
+        public var enter: ToastEnter = .fadeIn
+        public var exit: ToastExit = .fadeOut
+        public var spring: ToastSpring = .none
+        
+        public init() {}
+        
+        public init(
+                enter: ToastEnter,
+                exit: ToastExit,
+                spring: ToastSpring = .none
+            ) {
+            self.enter = enter
+            self.exit = exit
+            self.spring = spring
+        }
     }
     
     public struct Icon {
-        let image: UIImage
-        let width: CGFloat
+        public let image: UIImage
+        public let width: CGFloat
+        
+        public init(
+                image: UIImage,
+                width: CGFloat
+            ) {
+            self.image = image
+            self.width = width
+        }
     }
     
     public init() {}
